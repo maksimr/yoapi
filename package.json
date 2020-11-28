@@ -1,0 +1,49 @@
+{
+  "name": "playground",
+  "version": "0.0.0",
+  "main": "./src/index.js",
+  "scripts": {
+    "start": "webpack-dev-server -d --disable-host-check --history-api-fallback --host 0.0.0.0 --public $SANDBOX_URL",
+    "build": "webpack -p",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint src/"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.9",
+    "@babel/preset-env": "7.12.7",
+    "@babel/eslint-parser": "7.12.1",
+    "babel-loader": "8.2.2",
+    "css-loader": "5.0.1",
+    "html-webpack-plugin": "4.5.0",
+    "webpack": "5.8.0",
+    "webpack-cli": "3.3.12",
+    "webpack-dev-server": "3.11.0",
+    "eslint": "7.14.0",
+    "jest": "26.6.3",
+    "jest-cli": "26.6.3"
+  },
+  "eslintConfig": {
+    "parser": "@babel/eslint-parser",
+    "parserOptions": {
+      "requireConfigFile": false,
+      "ecmaVersion": 8,
+      "sourceType": "module"
+    },
+    "env": {
+      "browser": true,
+      "node": true
+    },
+    "rules": {
+      "no-undef": "warn",
+      "no-unused-vars": "warn",
+      "valid-jsdoc": [
+        "warn",
+        {
+          "requireReturn": false,
+          "requireParamDescription": false,
+          "requireReturnDescription": false
+        }
+      ]
+    }
+  }
+}
