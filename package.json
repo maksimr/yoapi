@@ -8,6 +8,7 @@
   ],
   "scripts": {
     "build": "tsc --project tsconfig.build.json --declaration --outDir dist --noEmit false",
+    "release": "npm version patch -m 'release: version %s' && git push && git push --tags",
     "test": "jest --passWithNoTests",
     "test:type": "tsc",
     "lint": "eslint lib/"
