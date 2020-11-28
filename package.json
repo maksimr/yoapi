@@ -10,9 +10,10 @@
   "scripts": {
     "build": "tsc --project tsconfig.build.json --declaration --outDir dist --noEmit false",
     "release": "npm version patch -m 'release: version %s' && git push && git push --tags",
+    "generate": "node ./scripts/index.js",
     "test": "jest --passWithNoTests",
     "test:type": "tsc",
-    "lint": "eslint lib/"
+    "lint": "eslint lib/ scripts/"
   },
   "devDependencies": {
     "@babel/core": "7.12.9",

@@ -16,7 +16,7 @@
   },
   "include": [
     "lib",
-    "index.js"
+    "scripts"
   ],
   "exclude": [
     "node_modules"

@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig",
   "exclude": [
-    "index.js",
+    "scripts",
     "**/*.e2e.js",
     "**/*.test.js"
   ]
