@@ -6,6 +6,7 @@
     "package.json",
     "dist/"
   ],
+  "license": "MIT",
   "scripts": {
     "build": "tsc --project tsconfig.build.json --declaration --outDir dist --noEmit false",
     "release": "npm version patch -m 'release: version %s' && git push && git push --tags",
