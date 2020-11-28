@@ -1,7 +1,7 @@
 {
   "name": "@maksimr/yoapi",
   "version": "0.1.2",
-  "main": "./dist/api.js",
+  "main": "./dist/entities.js",
   "files": [
     "package.json",
     "dist/"
