@@ -23,7 +23,10 @@ function main() {
 
   function generateResources(data) {
     const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
-    return generateDoc(data.paths, resourceFromPath, '../lib/resources.js', requestGenericDoc);
+    return generateDoc(data.paths, resourceFromPath, '../lib/resources.js', [
+      'import "./entities";',
+      requestGenericDoc
+    ].join('\n\n'));
   }
 
   function generateDoc(entities, generator, path, prefix = '') {
