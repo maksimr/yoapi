@@ -1,9 +1,44 @@
 const { resourceFromPath } = require('./resourceGenerator');
 describe('resourceGenerator', function() {
-  it('should generate resource for path', function() {
+  it('should generate resource for query collection path', function() {
+    const path = '/issues';
+    const resourceCode = resourceFromPath(path, {
+      'get': {
+        'parameters': [
+          {
+            'name': 'fields',
+            'in': 'query',
+            'schema': { 'type': 'string' }
+          }
+        ],
+        'responses': {
+          '200': {
+            'content': {
+              'application/json': {
+                'schema': {
+                  'type': 'array',
+                  'items': {
+                    '$ref': '#/components/schemas/Issue'
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    });
+
+    expect(resourceCode).toEqual(
+      `/**
+ * @typedef {object} GetIssuesRequestOptions
+ * @property {object} [query]
+ * @property {string} [query.fields]
+ */`);
+  });
+
+  it('should generate resource for get an item from collection path', function() {
     const path = '/issues/{id}';
     const resourceCode = resourceFromPath(path, {
-      'description': 'Resource that provides access to issues.',
       'get': {
         'parameters': [
           {
@@ -15,7 +50,9 @@ describe('resourceGenerator', function() {
             'name': 'id',
             'in': 'path',
             'required': true,
-            'schema': { 'type': 'string' }
+            'schema': {
+              'type': 'string'
+            }
           }
         ],
         'responses': {
@@ -34,11 +71,80 @@ describe('resourceGenerator', function() {
 
     expect(resourceCode).toEqual(
       `/**
- * @typedef {object} IssuesRequestOptions
+ * @typedef {object} GetIssuesIssueRequestOptions
  * @property {object} [query]
  * @property {string} [query.fields]
  * @property {object} path
  * @property {string} path.id
+ */`);
+  });
+
+  it('should generate resource for delete an item from collection path', function() {
+    const path = '/issues/{id}';
+    const resourceCode = resourceFromPath(path, {
+      'delete': {
+        'parameters': [
+          {
+            'name': 'id',
+            'in': 'path',
+            'required': true,
+            'schema': {
+              'type': 'string'
+            }
+          }
+        ],
+        'responses': {
+          '200': {
+            'description': 'OK'
+          }
+        }
+      }
+    });
+
+    expect(resourceCode).toEqual(
+      `/**
+ * @typedef {object} DeleteIssuesIssueRequestOptions
+ * @property {object} path
+ * @property {string} path.id
+ */`);
+  });
+
+  it('should generate resource for delete subresource item from collection path', function() {
+    const path = '/issues/{id}/attachments/{attachmentId}';
+    const resourceCode = resourceFromPath(path, {
+      'delete': {
+        'parameters': [
+          {
+            'name': 'id',
+            'in': 'path',
+            'required': true,
+            'schema': {
+              'type': 'string'
+            }
+          },
+          {
+            'name': 'attachmentId',
+            'in': 'path',
+            'required': true,
+            'schema': {
+              'type': 'string'
+            }
+          }
+        ],
+        'responses': {
+          '200': {
+            'description': 'OK'
+          }
+        }
+      }
+    });
+
+    expect(resourceCode).toEqual(
+      `/**
+ * @typedef {object} DeleteIssuesAttachmentsAttachmentRequestOptions
+ * @property {object} path
+ * @property {string} path.id
+ * @property {string} path.attachmentId
  */`);
   });
 });

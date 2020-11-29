@@ -45,3 +45,4 @@ function typeInference(it) {
 }
 
 module.exports.jsdocForComponent = jsdocForComponent;
+module.exports.typeInference = typeInference;
