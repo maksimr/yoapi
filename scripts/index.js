@@ -1,5 +1,5 @@
-const { generateRequestGenericFunction } = require('./resourceGenerator');
-const { resourceFromPath } = require('./resourceGenerator');
+const { generateRequestGenericFunction } = require('./requestGenerator');
+const { requestFromPath } = require('./requestGenerator');
 const { promisify } = require('util');
 const { resolve } = require('path');
 const { downloadSchema } = require('./schema');
@@ -23,10 +23,7 @@ function main() {
 
   function generateResources(data) {
     const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
-    return generateDoc(data.paths, resourceFromPath, '../lib/resources.js', [
-      'import "./entities";',
-      requestGenericDoc
-    ].join('\n\n'));
+    return generateDoc(data.paths, requestFromPath, '../lib/requests.js', requestGenericDoc);
   }
 
   function generateDoc(entities, generator, path, prefix = '') {

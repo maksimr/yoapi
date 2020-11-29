@@ -4,7 +4,7 @@ const { jsdocForComponent } = require('./jsdoc');
 const templateExpr = '{[^{]+}';
 const templateExprRegExpAll = new RegExp(templateExpr + '\\/?', 'g');
 
-function resourceFromPath(path, resourceDescription) {
+function requestFromPath(path, resourceDescription) {
   const parts = path
     .replace(/^\//, '')
     .replace(templateExprRegExpAll, '')
@@ -94,5 +94,5 @@ export class Request {
 }`;
 }
 
-module.exports.resourceFromPath = resourceFromPath;
+module.exports.requestFromPath = requestFromPath;
 module.exports.generateRequestGenericFunction = generateRequestGenericFunction;

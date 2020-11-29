@@ -1,9 +1,9 @@
-const { resourceFromPath } = require('./resourceGenerator');
+const { requestFromPath } = require('./requestGenerator');
 describe('resourceGenerator', function() {
   describe('Request', function() {
     it('should generate request', function() {
       const path = '/issues';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'get': {
           'parameters': [
             {
@@ -43,7 +43,7 @@ export function createGetIssuesRequest(options) {
   describe('requestOption', function() {
     it('should generate resource for query collection path', function() {
       const path = '/issues';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'get': {
           'parameters': [
             {
@@ -79,7 +79,7 @@ export function createGetIssuesRequest(options) {
 
     it('should generate resource for get an item from collection path', function() {
       const path = '/issues/{id}';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'get': {
           'parameters': [
             {
@@ -122,7 +122,7 @@ export function createGetIssuesRequest(options) {
 
     it('should generate resource for delete subresource item from collection path based on previous method response content', function() {
       const path = '/issue/{id}';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'get': {
           'parameters': [
             {
@@ -180,7 +180,7 @@ export function createGetIssuesRequest(options) {
 
     it('should generate resource for delete an item from collection path if not response content and methods before', function() {
       const path = '/issues/{id}';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'delete': {
           'parameters': [
             {
@@ -210,7 +210,7 @@ export function createGetIssuesRequest(options) {
 
     it('should generate resource for delete subresource item from collection path if not content presented and not any method with content before', function() {
       const path = '/issues/{id}/attachments/{attachmentId}';
-      const resourceCode = resourceFromPath(path, {
+      const resourceCode = requestFromPath(path, {
         'delete': {
           'parameters': [
             {
