@@ -11,9 +11,9 @@ function jsdocForComponent(componentName, component) {
   Object.keys(component.properties || {}).forEach((propertyName) => {
     const property = component.properties[propertyName];
     const type = typeInference(property);
-    builder.push(commentPart(`@property {${type}} [${propertyName}]`));
+    builder.push(commentPart(`@property {${type}} ${property.required ? propertyName : '[' + propertyName + ']'}`));
   });
-  builder.push('*/');
+  builder.push(' */');
 
   return builder.join('\n');
 

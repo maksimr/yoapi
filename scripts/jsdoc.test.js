@@ -17,7 +17,7 @@ describe('jsdoc', function() {
       `/**
  * @typedef {object} Foo
  * @property {string} [$type]
-*/`
+ */`
     );
   });
 
@@ -37,7 +37,7 @@ describe('jsdoc', function() {
       `/**
  * @typedef {object} Foo
  * @property {number} [foo]
-*/`
+ */`
     );
   });
 
@@ -51,7 +51,7 @@ describe('jsdoc', function() {
     expect(jsdoc).toEqual(
       `/**
  * @typedef {(object|string)} Foo
-*/`
+ */`
     );
   });
 
@@ -65,7 +65,7 @@ describe('jsdoc', function() {
     expect(jsdoc).toEqual(
       `/**
  * @typedef {Bar} Foo
-*/`
+ */`
     );
   });
 });
