@@ -1,3 +1,4 @@
+const { generateRequestGenericFunction } = require('./resourceGenerator');
 const { resourceFromPath } = require('./resourceGenerator');
 const { promisify } = require('util');
 const { resolve } = require('path');
@@ -21,14 +22,15 @@ function main() {
   }
 
   function generateResources(data) {
-    return generateDoc(data.paths, resourceFromPath, '../lib/resources.js');
+    const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
+    return generateDoc(data.paths, resourceFromPath, '../lib/resources.js', requestGenericDoc);
   }
 
-  function generateDoc(entities, generator, path) {
+  function generateDoc(entities, generator, path, prefix = '') {
     const docPath = resolve(__dirname, path);
     const doc = Object.keys(entities)
       .map((key) => generator(key, entities[key])).join('\n\n');
-    return promisify(require('fs').writeFile)(docPath, codegenComment + doc);
+    return promisify(require('fs').writeFile)(docPath, codegenComment + prefix + doc);
   }
 }
 
