@@ -27,7 +27,7 @@ function main() {
   function generateDoc(entities, generator, path) {
     const docPath = resolve(__dirname, path);
     const doc = Object.keys(entities)
-      .map((key) => resourceFromPath(key, entities[key])).join('\n\n');
+      .map((key) => generator(key, entities[key])).join('\n\n');
     return promisify(require('fs').writeFile)(docPath, codegenComment + doc);
   }
 }
