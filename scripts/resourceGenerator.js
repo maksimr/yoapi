@@ -11,7 +11,8 @@ function resourceFromPath(path, resourceDescription) {
     .replace(/\/$/, '')
     .split('/');
   const name = parts.map(capitalize).join('');
-  const maybeCollectionName = capitalize(parts[parts.length - 1] || '');
+  let maybeCollectionName = capitalize(parts[parts.length - 1] || '');
+  maybeCollectionName = maybeCollectionName.slice(0, maybeCollectionName.length - 1);
   const isEntityFromCollection = new RegExp(templateExpr + '$').test(path);
 
   return ['get', 'post', 'delete', 'put']
@@ -36,8 +37,9 @@ function resourceFromPath(path, resourceDescription) {
   function generateSuffixForMethod(reqDescription) {
     const suffix = getResponseType(reqDescription);
     if (!suffix) {
-      return maybeCollectionName.slice(0, maybeCollectionName.length - 1);
+      return maybeCollectionName;
     }
+    maybeCollectionName = suffix;
     return suffix;
   }
 }
