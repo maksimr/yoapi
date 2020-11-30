@@ -1,6 +1,6 @@
 {
   "name": "@maksimr/yoapi",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "main": "./dist/entities.js",
   "files": [
     "package.json",
