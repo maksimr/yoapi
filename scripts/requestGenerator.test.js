@@ -39,6 +39,25 @@ export function createGetIssuesRequest(options) {
 }`);
     });
 
+    it('should add server url', function() {
+      const path = '/issues';
+      const resourceCode = requestFromPath(path, {
+        'get': {
+          'parameters': [],
+          'responses': {}
+        }
+      }, '/api');
+
+      expect(resourceCode).toContain(
+        `/**
+ * @param {GetIssuesRequestOptions} options
+ * @returns {YoRequest<object>}
+ */
+export function createGetIssuesRequest(options) {
+  return {method: 'get', path: '/api${path}', query: null};
+}`);
+    });
+
     it('should interpolate path', function() {
       const path = '/issues';
       const resourceCode = requestFromPath(path, {

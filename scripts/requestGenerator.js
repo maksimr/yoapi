@@ -5,7 +5,7 @@ const templateExpr = '{[^{]+}';
 const templateExprRegExpAll = new RegExp(templateExpr + '\\/?', 'g');
 const REQUEST_TYPE = 'YoRequest';
 
-function requestFromPath(path, resourceDescription) {
+function requestFromPath(path, resourceDescription, serverUrl = '') {
   const parts = path
     .replace(/^\//, '')
     .replace(templateExprRegExpAll, '')
@@ -41,13 +41,16 @@ function requestFromPath(path, resourceDescription) {
   }
 
   function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties) {
+    const reqPath = serverUrl ?
+      serverUrl.replace(/\/$/, '') + '/' + path.replace(/^\//, '') :
+      path;
     return [
       '/**',
       ` * @param {${requestOptionsType}} options`,
       ` * @returns {${REQUEST_TYPE}<${responseType || 'object'}>}`,
       ' */',
       `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
-      `  return {method: '${method}', path: ${properties.path ? `interpolate('${path}', options.path)` : `'${path}'`}, query: ${properties.query ? 'options.query' : 'null'}};`,
+      `  return {method: '${method}', path: ${properties.path ? `interpolate('${reqPath}', options.path)` : `'${reqPath}'`}, query: ${properties.query ? 'options.query' : 'null'}};`,
       '}'
     ].join('\n');
   }

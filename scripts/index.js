@@ -24,7 +24,8 @@ function main() {
   function generateResources(data) {
     const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
     const interpolate = require('fs').readFileSync(resolve(__dirname, './path.js')).toString() + '\n\n';
-    return generateDoc(data.paths, requestFromPath, '../lib/requests.js',
+    const serverUrl = (data.servers && data.servers[0] && data.servers[0].url) || '';
+    return generateDoc(data.paths, (...args) => requestFromPath(...args, serverUrl), '../lib/requests.js',
       requestGenericDoc + interpolate
     );
   }
