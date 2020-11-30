@@ -35,7 +35,7 @@ describe('resourceGenerator', function() {
  * @returns {YoRequest<GetIssuesRequestOptions,Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
-  return {path: '${path}', options: options};
+  return {method: 'get', path: '${path}', options: options};
 }`);
     });
   });

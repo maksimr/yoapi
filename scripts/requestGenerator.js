@@ -36,18 +36,18 @@ function requestFromPath(path, resourceDescription) {
       type: 'object',
       properties: properties
     });
-    const reqDoc = generateCreateRequestFunctionForMethod(requestOptionsTypeName, responseType);
+    const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType);
     return [reqOptionsDoc, reqDoc].join('\n\n');
   }
 
-  function generateCreateRequestFunctionForMethod(requestOptionsType, responseType) {
+  function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType) {
     return [
       '/**',
       ` * @param {${requestOptionsType}} options`,
       ` * @returns {${REQUEST_TYPE}<${requestOptionsType},${responseType || 'object'}>}`,
       ' */',
       `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
-      `  return {path: '${path}', options: options};`,
+      `  return {method: '${method}', path: '${path}', options: options};`,
       '}'
     ].join('\n');
   }
@@ -83,6 +83,7 @@ function generateRequestGenericFunction() {
  * @template T
  * @template R
  * @typedef ${REQUEST_TYPE}
+ * @property {string} method
  * @property {string} path
  * @property {T} options
  */`;
