@@ -46,7 +46,7 @@ function requestFromPath(path, resourceDescription) {
       ` * @returns {Request<${requestOptionsType},${responseType || 'object'}>}`,
       ' */',
       `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
-      `  return new Request('${path}', options);`,
+      `  return {path: '${path}', options: options};`,
       '}'
     ].join('\n');
   }
@@ -81,17 +81,10 @@ function generateRequestGenericFunction() {
   return `/**
  * @template T
  * @template R
- */
-export class Request {
-  /**
-   * @param {string} path
-   * @param {T} options
-   */
-  constructor(path, options) {
-    this.path = path;
-    this.options = options;
-  }
-}`;
+ * @typedef Request
+ * @property {string} path
+ * @property {T} options
+ */`;
 }
 
 module.exports.requestFromPath = requestFromPath;
