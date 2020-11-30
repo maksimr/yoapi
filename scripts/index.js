@@ -23,7 +23,10 @@ function main() {
 
   function generateResources(data) {
     const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
-    return generateDoc(data.paths, requestFromPath, '../lib/requests.js', requestGenericDoc);
+    const interpolate = require('fs').readFileSync(resolve(__dirname, './path.js')).toString() + '\n\n';
+    return generateDoc(data.paths, requestFromPath, '../lib/requests.js',
+      requestGenericDoc + interpolate
+    );
   }
 
   function generateDoc(entities, generator, path, prefix = '') {

@@ -36,18 +36,18 @@ function requestFromPath(path, resourceDescription) {
       type: 'object',
       properties: properties
     });
-    const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType);
+    const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType, properties);
     return [reqOptionsDoc, reqDoc].join('\n\n');
   }
 
-  function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType) {
+  function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties) {
     return [
       '/**',
       ` * @param {${requestOptionsType}} options`,
-      ` * @returns {${REQUEST_TYPE}<${requestOptionsType},${responseType || 'object'}>}`,
+      ` * @returns {${REQUEST_TYPE}<${responseType || 'object'}>}`,
       ' */',
       `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
-      `  return {method: '${method}', path: '${path}', options: options};`,
+      `  return {method: '${method}', path: ${properties.path ? `interpolate('${path}', options.path)` : `'${path}'`}, query: ${properties.query ? 'options.query' : 'null'}};`,
       '}'
     ].join('\n');
   }
@@ -81,11 +81,10 @@ function capitalize(it) {
 function generateRequestGenericFunction() {
   return `/**
  * @template T
- * @template R
  * @typedef ${REQUEST_TYPE}
  * @property {string} method
  * @property {string} path
- * @property {T} options
+ * @property {any} [query]
  */`;
 }
 

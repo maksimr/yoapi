@@ -32,10 +32,48 @@ describe('resourceGenerator', function() {
       expect(resourceCode).toContain(
         `/**
  * @param {GetIssuesRequestOptions} options
- * @returns {YoRequest<GetIssuesRequestOptions,Array<Issue>>}
+ * @returns {YoRequest<Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
-  return {method: 'get', path: '${path}', options: options};
+  return {method: 'get', path: '${path}', query: options.query};
+}`);
+    });
+
+    it('should interpolate path', function() {
+      const path = '/issues';
+      const resourceCode = requestFromPath(path, {
+        'get': {
+          'parameters': [
+            {
+              'name': 'id',
+              'in': 'path',
+              'schema': { 'type': 'string' }
+            }
+          ],
+          'responses': {
+            '200': {
+              'content': {
+                'application/json': {
+                  'schema': {
+                    'type': 'array',
+                    'items': {
+                      '$ref': '#/components/schemas/Issue'
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      });
+
+      expect(resourceCode).toContain(
+        `/**
+ * @param {GetIssuesRequestOptions} options
+ * @returns {YoRequest<Array<Issue>>}
+ */
+export function createGetIssuesRequest(options) {
+  return {method: 'get', path: interpolate('${path}', options.path), query: null};
 }`);
     });
   });
