@@ -3,6 +3,7 @@ const { jsdocForComponent } = require('./jsdoc');
 
 const templateExpr = '{[^{]+}';
 const templateExprRegExpAll = new RegExp(templateExpr + '\\/?', 'g');
+const REQUEST_TYPE = 'YoRequest';
 
 function requestFromPath(path, resourceDescription) {
   const parts = path
@@ -43,7 +44,7 @@ function requestFromPath(path, resourceDescription) {
     return [
       '/**',
       ` * @param {${requestOptionsType}} options`,
-      ` * @returns {Request<${requestOptionsType},${responseType || 'object'}>}`,
+      ` * @returns {${REQUEST_TYPE}<${requestOptionsType},${responseType || 'object'}>}`,
       ' */',
       `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
       `  return {path: '${path}', options: options};`,
@@ -81,7 +82,7 @@ function generateRequestGenericFunction() {
   return `/**
  * @template T
  * @template R
- * @typedef Request
+ * @typedef ${REQUEST_TYPE}
  * @property {string} path
  * @property {T} options
  */`;

@@ -32,7 +32,7 @@ describe('resourceGenerator', function() {
       expect(resourceCode).toContain(
         `/**
  * @param {GetIssuesRequestOptions} options
- * @returns {Request<GetIssuesRequestOptions,Array<Issue>>}
+ * @returns {YoRequest<GetIssuesRequestOptions,Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
   return {path: '${path}', options: options};
