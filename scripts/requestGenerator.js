@@ -1,5 +1,5 @@
 const { typeInference } = require('./jsdoc');
-const { jsdocForComponent } = require('./jsdoc');
+const { jsdocForComponent, Comment } = require('./jsdoc');
 
 const templateExpr = '{[^{]+}';
 const templateExprRegExpAll = new RegExp(templateExpr + '\\/?', 'g');
@@ -42,14 +42,12 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
   }
 
   function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties) {
-    const reqPath = serverUrl ?
-      serverUrl.replace(/\/$/, '') + '/' + path.replace(/^\//, '') :
-      path;
+    const comment = new Comment();
+    const reqPath = serverUrl ? serverUrl.replace(/\/$/, '') + '/' + path.replace(/^\//, '') : path;
+    properties && comment.add(`@param {${requestOptionsType}} options`);
+    comment.add(`@returns {${REQUEST_TYPE}<${responseType || 'object'}>}`);
     return [
-      '/**',
-      properties ? ` * @param {${requestOptionsType}} options` : '',
-      ` * @returns {${REQUEST_TYPE}<${responseType || 'object'}>}`,
-      ' */',
+      comment.end(),
       `export function create${requestOptionsType.replace(/Options$/, '')}(${properties ? 'options' : ''}) {`,
       `  return {method: '${method}', path: ${properties && properties.path ? `interpolate('${reqPath}', options.path)` : `'${reqPath}'`}, query: ${properties && properties.query ? 'options && options.query' : 'null'}};`,
       '}'
@@ -83,13 +81,14 @@ function capitalize(it) {
 }
 
 function generateRequestGenericFunction() {
-  return `/**
- * @template T
- * @typedef ${REQUEST_TYPE}
- * @property {string} method
- * @property {string} path
- * @property {any} [query]
- */`;
+  const comment = new Comment();
+  return comment
+    .add('@template T')
+    .add(`@typedef ${REQUEST_TYPE}`)
+    .add('@property {string} method')
+    .add('@property {string} path')
+    .add('@property {any} [query]')
+    .end();
 }
 
 module.exports.REQUEST_TYPE = REQUEST_TYPE;

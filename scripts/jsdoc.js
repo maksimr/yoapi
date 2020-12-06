@@ -1,25 +1,40 @@
+class Comment {
+  constructor() {
+    this.lines = ['/**'];
+  }
+
+  /**
+   * @param {string} text
+   * @returns {Comment}
+   */
+  add(text) {
+    this.lines.push(` * ${text}`);
+    return this;
+  }
+
+  /**
+   * @returns {string}
+   */
+  end() {
+    this.lines.push(' */');
+    return this.lines.join('\n');
+  }
+}
+
 /**
  * @param {string} componentName
  * @param {object} component
  * @returns {string}
  */
 function jsdocForComponent(componentName, component) {
-  const builder = [];
-
-  builder.push('/**');
-  builder.push(commentPart(`@typedef {${typeInference(component)}} ${componentName}`));
+  const comment = new Comment();
+  comment.add(`@typedef {${typeInference(component)}} ${componentName}`);
   Object.keys(component.properties || {}).forEach((propertyName) => {
     const property = component.properties[propertyName];
     const type = typeInference(property);
-    builder.push(commentPart(`@property {${type}} ${property.required ? propertyName : '[' + propertyName + ']'}`));
+    comment.add(`@property {${type}} ${property.required ? propertyName : '[' + propertyName + ']'}`);
   });
-  builder.push(' */');
-
-  return builder.join('\n');
-
-  function commentPart(it) {
-    return ` * ${it}`;
-  }
+  return comment.end();
 }
 
 /**
@@ -44,5 +59,6 @@ function typeInference(it) {
   }
 }
 
+module.exports.Comment = Comment;
 module.exports.jsdocForComponent = jsdocForComponent;
 module.exports.typeInference = typeInference;

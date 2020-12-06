@@ -1,3 +1,4 @@
+const { generateRequestGenericFunction } = require('./requestGenerator');
 const { requestFromPath, REQUEST_TYPE } = require('./requestGenerator');
 describe('resourceGenerator', function() {
   describe('Request', function() {
@@ -300,6 +301,19 @@ export function createGetIssuesRequest(options) {
  * @property {object} path
  * @property {string} path.id
  * @property {string} path.attachmentId
+ */`);
+    });
+  });
+
+  describe('BaseType', function() {
+    it('should generate base request type', function() {
+      expect(generateRequestGenericFunction()).toContain(
+        `/**
+ * @template T
+ * @typedef ${REQUEST_TYPE}
+ * @property {string} method
+ * @property {string} path
+ * @property {any} [query]
  */`);
     });
   });
