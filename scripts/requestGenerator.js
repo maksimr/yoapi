@@ -91,5 +91,6 @@ function generateRequestGenericFunction() {
  */`;
 }
 
+module.exports.REQUEST_TYPE = REQUEST_TYPE;
 module.exports.requestFromPath = requestFromPath;
 module.exports.generateRequestGenericFunction = generateRequestGenericFunction;

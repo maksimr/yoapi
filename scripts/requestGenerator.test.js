@@ -1,4 +1,4 @@
-const { requestFromPath } = require('./requestGenerator');
+const { requestFromPath, REQUEST_TYPE } = require('./requestGenerator');
 describe('resourceGenerator', function() {
   describe('Request', function() {
     it('should generate request', function() {
@@ -32,7 +32,7 @@ describe('resourceGenerator', function() {
       expect(resourceCode).toContain(
         `/**
  * @param {GetIssuesRequestOptions} options
- * @returns {YoRequest<Array<Issue>>}
+ * @returns {${REQUEST_TYPE}<Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
   return {method: 'get', path: '${path}', query: options.query};
@@ -51,7 +51,7 @@ export function createGetIssuesRequest(options) {
       expect(resourceCode).toContain(
         `/**
  * @param {GetIssuesRequestOptions} options
- * @returns {YoRequest<object>}
+ * @returns {${REQUEST_TYPE}<object>}
  */
 export function createGetIssuesRequest(options) {
   return {method: 'get', path: '/api${path}', query: null};
@@ -89,7 +89,7 @@ export function createGetIssuesRequest(options) {
       expect(resourceCode).toContain(
         `/**
  * @param {GetIssuesRequestOptions} options
- * @returns {YoRequest<Array<Issue>>}
+ * @returns {${REQUEST_TYPE}<Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
   return {method: 'get', path: interpolate('${path}', options.path), query: null};
