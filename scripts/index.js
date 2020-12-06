@@ -22,11 +22,14 @@ function main() {
   }
 
   function generateResources(data) {
-    const requestGenericDoc = generateRequestGenericFunction() + '\n\n';
-    const interpolate = require('fs').readFileSync(resolve(__dirname, './path.js')).toString() + '\n\n';
     const serverUrl = (data.servers && data.servers[0] && data.servers[0].url) || '';
     return generateDoc(data.paths, (...args) => requestFromPath(...args, serverUrl), '../lib/requests.js',
-      requestGenericDoc + interpolate
+      [
+        'import \'./entities\';',
+        generateRequestGenericFunction(),
+        require('fs').readFileSync(resolve(__dirname, './path.js')).toString(),
+        ''
+      ].join('\n\n')
     );
   }
 
