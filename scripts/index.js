@@ -25,7 +25,6 @@ function main() {
     const serverUrl = (data.servers && data.servers[0] && data.servers[0].url) || '';
     return generateDoc(data.paths, (...args) => requestFromPath(...args, serverUrl), '../lib/requests.js',
       [
-        'import \'./entities\';',
         generateRequestGenericFunction(),
         require('fs').readFileSync(resolve(__dirname, './path.js')).toString(),
         ''
