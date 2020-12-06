@@ -25,19 +25,20 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
     const suffix = isEntityFromCollection ? generateSuffixForMethod(responseType) : '';
     const requestOptionsTypeName = `${capitalize(method)}${name}${suffix}RequestOptions`;
 
-    const properties = resourceDescription[method].parameters.reduce((properties, parameter) => {
+    const parameters = resourceDescription[method].parameters;
+    const properties = parameters.length ? parameters.reduce((properties, parameter) => {
       const groupName = parameter.in;
       properties[groupName] = properties[groupName] || { type: 'object', required: parameter.required };
       properties[`${groupName}.${parameter.name}`] = Object.assign({ 'required': parameter.required }, parameter.schema);
       return properties;
-    }, {});
+    }, {}) : null;
 
-    const reqOptionsDoc = jsdocForComponent(requestOptionsTypeName, {
+    const reqOptionsDoc = properties ? jsdocForComponent(requestOptionsTypeName, {
       type: 'object',
       properties: properties
-    });
+    }) : '';
     const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType, properties);
-    return [reqOptionsDoc, reqDoc].join('\n\n');
+    return [reqOptionsDoc, reqDoc].filter((it) => it).join('\n\n');
   }
 
   function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties) {
@@ -46,13 +47,13 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
       path;
     return [
       '/**',
-      ` * @param {${requestOptionsType}} options`,
+      properties ? ` * @param {${requestOptionsType}} options` : '',
       ` * @returns {${REQUEST_TYPE}<${responseType || 'object'}>}`,
       ' */',
-      `export function create${requestOptionsType.replace(/Options$/, '')}(options) {`,
-      `  return {method: '${method}', path: ${properties.path ? `interpolate('${reqPath}', options.path)` : `'${reqPath}'`}, query: ${properties.query ? 'options.query' : 'null'}};`,
+      `export function create${requestOptionsType.replace(/Options$/, '')}(${properties ? 'options' : ''}) {`,
+      `  return {method: '${method}', path: ${properties && properties.path ? `interpolate('${reqPath}', options.path)` : `'${reqPath}'`}, query: ${properties && properties.query ? 'options && options.query' : 'null'}};`,
       '}'
-    ].join('\n');
+    ].filter((it) => it).join('\n');
   }
 
   function generateSuffixForMethod(responseType) {

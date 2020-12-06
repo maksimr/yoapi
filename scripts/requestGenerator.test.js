@@ -35,7 +35,7 @@ describe('resourceGenerator', function() {
  * @returns {${REQUEST_TYPE}<Array<Issue>>}
  */
 export function createGetIssuesRequest(options) {
-  return {method: 'get', path: '${path}', query: options.query};
+  return {method: 'get', path: '${path}', query: options && options.query};
 }`);
     });
 
@@ -50,10 +50,9 @@ export function createGetIssuesRequest(options) {
 
       expect(resourceCode).toContain(
         `/**
- * @param {GetIssuesRequestOptions} options
  * @returns {${REQUEST_TYPE}<object>}
  */
-export function createGetIssuesRequest(options) {
+export function createGetIssuesRequest() {
   return {method: 'get', path: '/api${path}', query: null};
 }`);
     });
