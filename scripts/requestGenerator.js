@@ -30,7 +30,17 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
       const groupName = parameter.in;
       const optional = !parameter.required;
       properties[groupName] = properties[groupName] || { type: 'object', optional: optional };
-      properties[`${groupName}.${parameter.name}`] = Object.assign({ optional: optional }, parameter.schema);
+      const parameterName = parameter.name;
+      if (responseType && groupName === 'query' && parameterName === 'fields') {
+        let fieldsType = responseType;
+        if (responseType.startsWith('Array<')) {
+          fieldsType = responseType
+            .replace(/^Array</, '')
+            .replace(/>$/, '');
+        }
+        parameter.schema = { type: `Partial<${fieldsType}>` };
+      }
+      properties[`${groupName}.${parameterName}`] = Object.assign({ optional: optional }, parameter.schema);
       return properties;
     }, {}) : null;
 
