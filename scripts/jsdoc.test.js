@@ -16,7 +16,7 @@ describe('jsdoc', function() {
     expect(jsdoc).toEqual(
       `/**
  * @typedef {object} Foo
- * @property {string} [$type]
+ * @property {string} $type
  */`
     );
   });
@@ -36,7 +36,7 @@ describe('jsdoc', function() {
     expect(jsdoc).toEqual(
       `/**
  * @typedef {object} Foo
- * @property {number} [foo]
+ * @property {number} foo
  */`
     );
   });

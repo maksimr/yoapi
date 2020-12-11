@@ -28,8 +28,9 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
     const parameters = resourceDescription[method].parameters;
     const properties = parameters.length ? parameters.reduce((properties, parameter) => {
       const groupName = parameter.in;
-      properties[groupName] = properties[groupName] || { type: 'object', required: parameter.required };
-      properties[`${groupName}.${parameter.name}`] = Object.assign({ 'required': parameter.required }, parameter.schema);
+      const optional = !parameter.required;
+      properties[groupName] = properties[groupName] || { type: 'object', optional: optional };
+      properties[`${groupName}.${parameter.name}`] = Object.assign({ optional: optional }, parameter.schema);
       return properties;
     }, {}) : null;
 

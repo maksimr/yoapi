@@ -32,7 +32,7 @@ function jsdocForComponent(componentName, component) {
   Object.keys(component.properties || {}).forEach((propertyName) => {
     const property = component.properties[propertyName];
     const type = typeInference(property);
-    comment.add(`@property {${type}} ${property.required ? propertyName : '[' + propertyName + ']'}`);
+    comment.add(`@property {${type}} ${property.optional ? '[' + propertyName + ']' : propertyName}`);
   });
   return comment.end();
 }
