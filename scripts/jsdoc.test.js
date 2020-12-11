@@ -68,4 +68,51 @@ describe('jsdoc', function() {
  */`
     );
   });
+
+  it('should generate shape type', function() {
+    const componentName = 'Foo';
+    const component = {
+      type: 'object',
+      'properties': {
+        'foo': {
+          'type': 'integer'
+        }
+      }
+    };
+
+    const jsdoc = jsdocForComponent(componentName, component, true);
+    expect(jsdoc).toEqual(
+      `/**
+ * @typedef {object} FooShape
+ * @property {*} foo
+ */`
+    );
+  });
+
+  it('should generate shape type with reference', function() {
+    const componentName = 'Foo';
+    const component = {
+      '$ref': '#/components/schemas/Bar',
+      'properties': {
+        'foo': {
+          'type': 'integer'
+        },
+        'zoo': {
+          type: 'array',
+          items: {
+            '$ref': '#/components/schemas/Zoo'
+          }
+        }
+      }
+    };
+
+    const jsdoc = jsdocForComponent(componentName, component, true);
+    expect(jsdoc).toEqual(
+      `/**
+ * @typedef {BarShape} FooShape
+ * @property {*} foo
+ * @property {ZooShape} zoo
+ */`
+    );
+  });
 });

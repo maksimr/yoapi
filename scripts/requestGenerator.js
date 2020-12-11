@@ -32,12 +32,7 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
       properties[groupName] = properties[groupName] || { type: 'object', optional: optional };
       const parameterName = parameter.name;
       if (responseType && groupName === 'query' && parameterName === 'fields') {
-        let fieldsType = responseType;
-        if (responseType.startsWith('Array<')) {
-          fieldsType = responseType
-            .replace(/^Array</, '')
-            .replace(/>$/, '');
-        }
+        const fieldsType = getResponseType(resourceDescription[method], true);
         parameter.schema = { type: `Partial<${fieldsType}>` };
       }
       properties[`${groupName}.${parameterName}`] = Object.assign({ optional: optional }, parameter.schema);
@@ -75,7 +70,7 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
   }
 }
 
-function getResponseType(reqDescription) {
+function getResponseType(reqDescription, shape) {
   const schema = (
     reqDescription.responses &&
     reqDescription.responses['200'] &&
@@ -84,7 +79,7 @@ function getResponseType(reqDescription) {
     reqDescription.responses['200'].content['application/json'].schema &&
     reqDescription.responses['200'].content['application/json'].schema
   );
-  return schema ? typeInference(schema) : '';
+  return schema ? typeInference(schema, shape) : '';
 }
 
 function capitalize(it) {

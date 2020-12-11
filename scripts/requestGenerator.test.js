@@ -130,7 +130,7 @@ export function createGetIssuesRequest(options) {
         `/**
  * @typedef {object} GetIssuesRequestOptions
  * @property {object} [query]
- * @property {Partial<Issue>} [query.fields]
+ * @property {Partial<IssueShape>} [query.fields]
  */`);
     });
 
@@ -171,7 +171,7 @@ export function createGetIssuesRequest(options) {
         `/**
  * @typedef {object} GetIssuesIssueRequestOptions
  * @property {object} [query]
- * @property {Partial<Issue>} [query.fields]
+ * @property {Partial<IssueShape>} [query.fields]
  * @property {object} path
  * @property {string} path.id
  */`);

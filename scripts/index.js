@@ -18,7 +18,12 @@ function main() {
   });
 
   function generateComponentsJsDoc(data) {
-    return generateDoc(data.components.schemas, jsdocForComponent, '../lib/entities.js');
+    return generateDoc(data.components.schemas, (componentName, component) => {
+      return [
+        jsdocForComponent(componentName, component),
+        jsdocForComponent(componentName, component, true)
+      ].join('\n\n');
+    }, '../lib/entities.js');
   }
 
   function generateResources(data) {
