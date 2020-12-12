@@ -43,11 +43,11 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
       type: 'object',
       properties: properties
     }) : '';
-    const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType, properties);
+    const reqDoc = generateCreateRequestFunctionForMethod(method, requestOptionsTypeName, responseType, properties, parameters);
     return [reqOptionsDoc, reqDoc].filter((it) => it).join('\n\n');
   }
 
-  function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties) {
+  function generateCreateRequestFunctionForMethod(method, requestOptionsType, responseType, properties, parameters) {
     const comment = new Comment();
     const reqPath = serverUrl ? serverUrl.replace(/\/$/, '') + '/' + path.replace(/^\//, '') : path;
     properties && comment.add(`@param {${requestOptionsType}} options`);
@@ -55,9 +55,20 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
     return [
       comment.end(),
       `export function create${requestOptionsType.replace(/Options$/, '')}(${properties ? 'options' : ''}) {`,
-      `  return {method: '${method}', path: ${properties && properties.path ? `interpolate('${reqPath}', options.path)` : `'${reqPath}'`}, query: ${properties && properties.query ? 'options && options.query' : 'null'}};`,
+      `  return {method: '${method}', path: ${properties && properties.path ? `\`${compilePath(reqPath, parameters)}\`` : `'${reqPath}'`}, query: ${properties && properties.query ? 'options && options.query' : 'null'}};`,
       '}'
     ].filter((it) => it).join('\n');
+
+    function compilePath(path, parameters) {
+      const pathParams = parameters.filter(it => it.in === 'path').reduce((dict, param) => {
+        dict[param.name] = `\${options.path.${param.name}}`;
+        return dict;
+      }, {});
+
+      return path.replace(/{([^{}]+)}/g,
+        (_, paramName) => pathParams.hasOwnProperty(paramName) ? pathParams[paramName] : _
+      );
+    }
   }
 
   function generateSuffixForMethod(responseType) {

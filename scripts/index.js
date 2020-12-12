@@ -31,7 +31,6 @@ function main() {
     return generateDoc(data.paths, (...args) => requestFromPath(...args, serverUrl), '../lib/requests.js',
       [
         generateRequestGenericFunction(),
-        require('fs').readFileSync(resolve(__dirname, './path.js')).toString(),
         ''
       ].join('\n\n')
     );

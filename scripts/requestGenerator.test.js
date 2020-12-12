@@ -59,7 +59,7 @@ export function createGetIssuesRequest() {
     });
 
     it('should interpolate path', function() {
-      const path = '/issues';
+      const path = '/issues/{id}';
       const resourceCode = requestFromPath(path, {
         'get': {
           'parameters': [
@@ -74,10 +74,7 @@ export function createGetIssuesRequest() {
               'content': {
                 'application/json': {
                   'schema': {
-                    'type': 'array',
-                    'items': {
-                      '$ref': '#/components/schemas/Issue'
-                    }
+                    '$ref': '#/components/schemas/Issue'
                   }
                 }
               }
@@ -88,11 +85,11 @@ export function createGetIssuesRequest() {
 
       expect(resourceCode).toContain(
         `/**
- * @param {GetIssuesRequestOptions} options
- * @returns {${REQUEST_TYPE}<Array<Issue>>}
+ * @param {GetIssuesIssueRequestOptions} options
+ * @returns {${REQUEST_TYPE}<Issue>}
  */
-export function createGetIssuesRequest(options) {
-  return {method: 'get', path: interpolate('${path}', options.path), query: null};
+export function createGetIssuesIssueRequest(options) {
+  return {method: 'get', path: \`/issues/\${options.path.id}\`, query: null};
 }`);
     });
   });
