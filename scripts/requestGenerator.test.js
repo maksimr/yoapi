@@ -1,3 +1,4 @@
+const { fieldsType } = require('./jsdoc');
 const { generateRequestGenericFunction } = require('./requestGenerator');
 const { requestFromPath, REQUEST_TYPE } = require('./requestGenerator');
 describe('resourceGenerator', function() {
@@ -127,7 +128,7 @@ export function createGetIssuesIssueRequest(options) {
         `/**
  * @typedef {object} GetIssuesRequestOptions
  * @property {object} [query]
- * @property {Partial<IssueShape>} [query.fields]
+ * @property {Partial<${fieldsType('Issue')}>} [query.fields]
  */`);
     });
 
@@ -168,7 +169,7 @@ export function createGetIssuesIssueRequest(options) {
         `/**
  * @typedef {object} GetIssuesIssueRequestOptions
  * @property {object} [query]
- * @property {Partial<IssueShape>} [query.fields]
+ * @property {Partial<${fieldsType('Issue')}>} [query.fields]
  * @property {object} path
  * @property {string} path.id
  */`);

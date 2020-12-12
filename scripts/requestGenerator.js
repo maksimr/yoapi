@@ -81,7 +81,7 @@ function requestFromPath(path, resourceDescription, serverUrl = '') {
   }
 }
 
-function getResponseType(reqDescription, shape) {
+function getResponseType(reqDescription, fields) {
   const schema = (
     reqDescription.responses &&
     reqDescription.responses['200'] &&
@@ -90,7 +90,7 @@ function getResponseType(reqDescription, shape) {
     reqDescription.responses['200'].content['application/json'].schema &&
     reqDescription.responses['200'].content['application/json'].schema
   );
-  return schema ? typeInference(schema, shape) : '';
+  return schema ? typeInference(schema, fields) : '';
 }
 
 function capitalize(it) {

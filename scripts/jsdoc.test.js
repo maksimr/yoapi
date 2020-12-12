@@ -1,3 +1,4 @@
+const { fieldsType } = require('./jsdoc');
 const { jsdocForComponent } = require('./jsdoc');
 describe('jsdoc', function() {
   it('should generate jsdoc for component', function() {
@@ -69,7 +70,7 @@ describe('jsdoc', function() {
     );
   });
 
-  it('should generate shape type', function() {
+  it('should generate fields type', function() {
     const componentName = 'Foo';
     const component = {
       type: 'object',
@@ -83,13 +84,13 @@ describe('jsdoc', function() {
     const jsdoc = jsdocForComponent(componentName, component, true);
     expect(jsdoc).toEqual(
       `/**
- * @typedef {object} FooShape
+ * @typedef {object} ${fieldsType('Foo')}
  * @property {*} foo
  */`
     );
   });
 
-  it('should generate shape type with reference', function() {
+  it('should generate fields type with reference', function() {
     const componentName = 'Foo';
     const component = {
       '$ref': '#/components/schemas/Bar',
@@ -109,9 +110,9 @@ describe('jsdoc', function() {
     const jsdoc = jsdocForComponent(componentName, component, true);
     expect(jsdoc).toEqual(
       `/**
- * @typedef {BarShape} FooShape
+ * @typedef {${fieldsType('Bar')}} ${fieldsType('Foo')}
  * @property {*} foo
- * @property {ZooShape} zoo
+ * @property {${fieldsType('Zoo')}} zoo
  */`
     );
   });
